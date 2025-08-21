@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/servicedb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD} # Pega do arquivo .env
+      - WEB3J_CLIENT_ADDRESS=http://geth-node:8545 # Conexão com o Geth
+    depends_on:
+      - mysql-db
+      - geth-node
+    networks:
+      - app-network
+
+  mysql-db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=servicedb
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  geth-node:
+    image: ethereum/client-go:stable
+    command: >
+      --sepolia --http --http.addr "0.0.0.0" --http.port 8545 
+      --http.api "eth,net,web3" --http.corsdomain "*"
+      --syncmode "light"
+    ports:
+      - "8545:8545"
+    volumes:
+      - geth-data:/root/.ethereum
+    networks:
+      - app-network
+
+volumes:
+  mysql-data:
+  geth-data:
+
+networks:
+  app-network:
