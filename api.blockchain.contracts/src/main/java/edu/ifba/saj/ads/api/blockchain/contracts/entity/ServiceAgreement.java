@@ -38,7 +38,10 @@ import lombok.NoArgsConstructor;
            @Index(name = "idx_status", columnList = "status")
        })
 @EntityListeners(AuditingEntityListener.class)
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Data 
+@NoArgsConstructor
+@AllArgsConstructor 
+@Builder
 public class ServiceAgreement {
 
     @Id

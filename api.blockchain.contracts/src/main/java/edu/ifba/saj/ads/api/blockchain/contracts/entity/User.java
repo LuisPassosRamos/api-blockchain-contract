@@ -25,7 +25,10 @@ import lombok.NoArgsConstructor;
        uniqueConstraints = @UniqueConstraint(name = "ux_users_wallet", columnNames = "wallet"),
        indexes = { @Index(name = "idx_users_wallet", columnList = "wallet") })
 @EntityListeners(AuditingEntityListener.class)
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Data 
+@NoArgsConstructor 
+@AllArgsConstructor
+@Builder
 public class User {
 
     @Id
